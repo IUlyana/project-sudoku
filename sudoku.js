@@ -7,24 +7,25 @@
 // const fs = require('fs');
 // const sudoku = require('./sudoku-puzzles.txt','utf-8');
 let boardString = '1-58-2----9--764-52--4--819-19--73-6762-83-9-----61-5---76---3-43--2-5-16--3-89--';
-function createBoard(boardString) {  // мы создаем доску
+function createBoard(boardString) {  // Функция создает и заполняет доску
   let newArr = [];
   let newStr = '';
   for (let i = 0; i < boardString.length; i += 1) {
     newStr += boardString[i];
     if (newStr.length === 9) {
-      newArr.push(newStr.split(''));
+      newArr.push(newStr.split('')); 
       newStr = '';
     }
+    //console.log(newArr, '-----------------') // Процесс заполнения доски
   }
   return newArr
 }
 
 
 function solve(boardArr) {
-  const changer = (boardArr) => {
+  const solve = (boardArr) => {
     for (let row = 0; row < boardArr.length; row++) {
-      for (let cols = 0; cols < boardArr[i].length; cols++) {
+      for (let cols = 0; cols < boardArr[row].length; cols++) {
         if (boardArr[row][cols] === '-') {
           for (let num = 1; num <= 9; num++) {
             if(checkInteger(boardArr, num, row, cols)){
@@ -42,8 +43,13 @@ function solve(boardArr) {
       }
     }
   return true;
-};
+  };
+  solve(boardArr)
+  return boardArr;
+}
 
+const solvedBoard = solve(createBoard(boardString));
+console.log(prettyBoard(solvedBoard));
 
 function checkInteger(field, int, row, col) {
     if (field[row].includes(int)) {
@@ -69,7 +75,7 @@ function checkInteger(field, int, row, col) {
 
 
 
-}
+
 
 console.log(solve(createBoard(boardString)))
 
@@ -78,16 +84,19 @@ console.log(solve(createBoard(boardString)))
 // The input board will be in whatever
 // form `solve` returns.
 function isSolved(board) {
-
+  return !board.map((el)=> el.join('')).join('').includes('-');
 }
-
+console.log('Все супер, у нас получилось!', isSolved(solvedBoard));
 // Takes in a board in some form and
 // returns a String that's well formatted
 // for output to the screen.
 // The input board will be in whatever
 // form `solve` returns.
 function prettyBoard(board) {
-
+  if(!Array.isArray(board)){
+    board = createBoard(boardString);
+  }
+  return board.map((el)=>el.join(' ')).join('\n');
 }
 
 // Exports all the functions to use them in another file.
