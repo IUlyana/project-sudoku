@@ -23,19 +23,29 @@ function createBoard(boardString) {  // мы создаем доску
 
 function solve(boardArr) {
   const changer = (boardArr) => {
-
     for (let row = 0; row < boardArr.length; row++) {
       for (let cols = 0; cols < boardArr[i].length; cols++) {
         if (boardArr[row][cols] === '-') {
           for (let num = 1; num <= 9; num++) {
-            boardArr[row][cols] = `${num}`
+            if(checkInteger(boardArr, num, row, cols)){
+              boardArr[row][cols] = `${num}`;
+              if(solve(boardArr)) {
+                return true;
+              }
+              else{ 
+                boardArr[row][cols] = '-';
+              }
+            }
           }
+          return false;
         }
       }
     }
-  };
+  return true;
+};
 
-  function checkInteger(field, int, row, col) {
+
+function checkInteger(field, int, row, col) {
     if (field[row].includes(int)) {
       return false
     }
@@ -45,7 +55,7 @@ function solve(boardArr) {
       }
     }
 
-    let boxRows = row - row % 3
+    let boxRows = row - row % 3;
     let boxColumns = col - col % 3;
     for (let i =0; i < 3; i += 1) {
       for (let j = 0; j < 3; j += 1) {
@@ -54,8 +64,6 @@ function solve(boardArr) {
         }
       }
     }
-
-
     return true
   }
 
